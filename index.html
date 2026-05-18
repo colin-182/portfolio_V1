@@ -1,126 +1,1234 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, inital-scale=1.0">
-        <title>Colin Keogh | Full Stack Developer</title>
-    </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Colin Keogh | Full Stack Developer</title>
 
-    <body>
-        <!-- nav menu -->
-         <nav>
-            <div class="nav-inner">
-                <div class="nav-logo">Colin Keogh<span class="cursor-blink">_</span></div>
+  <!-- ============================================================
+    GOOGLE FONTS
+    Syne       — headings (bold, architectural)
+    DM Sans    — body text (clean, readable)
+    JetBrains  — code labels & accents (developer feel)
+  ============================================================ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
-                <ul class="nav-links">
-                    <li><a href="#about" class="active">About</a></li>
-                    <li><a href="#skills">Skills</a></li>
-                    <li><a href="#projects">Projects</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
+  <style>
+    /* ============================================================
+      TABLE OF CONTENTS
+      1. CSS Variables (colours, fonts, spacing)
+      2. Reset & Base
+      3. Scrollbar & Selection
+      4. Utility Classes
+      5. Navigation
+      6. Hero Section
+      7. Skills Section
+      8. Projects Section
+      9. Contact Section
+      10. Footer
+      11. Animations & Transitions
+      12. Media Queries (mobile)
+    ============================================================ */
 
-                <a href="#contact" class="btn-primary nav-hire=btn">Hire Me</a>
 
-                <!-- hamburger button for mobile only -->
-                 <button class="nav-hamburger" id="hamburger" aria-label="Open Menu">☰</button>
+    /* ============================================================
+      1. CSS VARIABLES
+      Change these to retheme the whole site instantly.
+    ============================================================ */
+    :root {
+      --bg:          #0d0d0d;   /* main background */
+      --bg-alt:      #0a0a0a;   /* slightly darker sections */
+      --bg-card:     #141414;   /* card backgrounds */
+      --border:      #1e1e1e;   /* subtle borders */
+      --border-mid:  #1a1a1a;   /* mid-weight borders */
+      --text:        #e8e2d9;   /* primary text */
+      --text-muted:  #888;      /* secondary/muted text */
+      --text-dim:    #555;      /* very dim text */
+      --text-faint:  #444;      /* faintest text / placeholders */
+      --accent:      #e8613a;   /* orange accent — change this to rebrand */
+
+      --font-heading: 'Syne', sans-serif;
+      --font-body:    'DM Sans', sans-serif;
+      --font-mono:    'JetBrains Mono', monospace;
+
+      --max-width: 1100px;
+      --section-padding: 100px 5vw;
+    }
+
+
+    /* ============================================================
+      2. RESET & BASE
+    ============================================================ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth; /* enables smooth scrolling for anchor links */
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;       /* prevent horizontal scroll */
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+
+    /* ============================================================
+      3. SCROLLBAR & TEXT SELECTION
+    ============================================================ */
+    ::-webkit-scrollbar        { width: 4px; }
+    ::-webkit-scrollbar-track  { background: var(--bg); }
+    ::-webkit-scrollbar-thumb  { background: var(--accent); border-radius: 2px; }
+
+    ::selection {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+
+    /* ============================================================
+      4. UTILITY CLASSES
+      Reusable bits you'll use across multiple sections.
+    ============================================================ */
+
+    /* Centred page wrapper */
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+
+    /* Small mono label above headings */
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    /* Orange underline accent beneath headings */
+    .divider {
+      width: 40px;
+      height: 2px;
+      background: var(--accent);
+      margin-top: 20px;
+    }
+
+    /* Skill/tech pill tags on project cards */
+    .tag {
+      display: inline-block;
+      background: rgba(232, 97, 58, 0.12);
+      color: var(--accent);
+      border: 1px solid rgba(232, 97, 58, 0.3);
+      border-radius: 3px;
+      padding: 2px 10px;
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      letter-spacing: 0.04em;
+    }
+
+    /* Primary filled button */
+    .btn-primary {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--bg);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      padding: 12px 28px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(232, 97, 58, 0.35);
+    }
+
+    /* Secondary outlined button */
+    .btn-outline {
+      display: inline-block;
+      background: transparent;
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+      padding: 11px 28px;
+      border: 1px solid #333;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* Fade-in animation class — JS adds this when element enters viewport */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+
+    /* ============================================================
+      5. NAVIGATION
+    ============================================================ */
+    nav {
+      position: fixed;       /* sticks to top as you scroll */
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      height: 64px;
+      border-bottom: 1px solid var(--border-mid);
+      background: rgba(13, 13, 13, 0.92);
+      backdrop-filter: blur(12px);  /* frosted glass effect */
+      padding: 0 5vw;
+    }
+
+    .nav-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Animated logo/name in top left */
+    .nav-logo {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+    }
+
+    /* Blinking cursor after the logo text */
+    .cursor-blink {
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    /* Desktop nav links */
+    .nav-links {
+      display: flex;
+      gap: 36px;
+    }
+
+    .nav-links a {
+      position: relative;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 500;
+      padding: 4px 0;
+      color: var(--text-muted);
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--text);
+    }
+
+    /* Underline on active nav link */
+    .nav-links a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 1.5px;
+      background: var(--accent);
+    }
+
+    /* Hamburger button — hidden on desktop */
+    .nav-hamburger {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text);
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
+
+    /* Mobile dropdown menu — hidden by default */
+    .nav-mobile-menu {
+      display: none;
+      flex-direction: column;
+      border-top: 1px solid var(--border-mid);
+      padding: 12px 0 20px;
+    }
+
+    .nav-mobile-menu.open {
+      display: flex;
+    }
+
+    .nav-mobile-menu a {
+      padding: 12px 5vw;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      transition: color 0.2s;
+    }
+
+    .nav-mobile-menu a:hover {
+      color: var(--text);
+    }
+
+
+    /* ============================================================
+      6. HERO SECTION
+    ============================================================ */
+    #about {
+      min-height: 100vh;          /* fills the full viewport height */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 120px 5vw 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Decorative glowing orb in background */
+    .hero-orb {
+      position: absolute;
+      top: 20%;
+      right: 5%;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(232, 97, 58, 0.08) 0%, transparent 70%);
+      pointer-events: none;   /* can't accidentally click it */
+    }
+
+    .hero-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* Big display heading */
+    .hero-title {
+      font-family: var(--font-heading);
+      font-size: clamp(3rem, 8vw, 7rem);  /* scales fluidly with viewport */
+      font-weight: 800;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-top: 20px;
+    }
+
+    /* Accent coloured part of the title */
+    .hero-title span {
+      color: var(--accent);
+    }
+
+    /* Subtitle/tagline paragraph */
+    .hero-subtitle {
+      margin-top: 32px;
+      max-width: 520px;
+      font-size: 1.05rem;
+      line-height: 1.75;
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+
+    /* CTA button row */
+    .hero-buttons {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 40px;
+    }
+
+    /* Stats row (numbers under the buttons) */
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      margin-top: 80px;
+    }
+
+    .hero-stat-number {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .hero-stat-label {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    /* Staggered fade-in animations for hero elements */
+    .hero-inner .section-label  { animation: fadeUp 0.7s ease 0.1s both; }
+    .hero-inner .hero-title     { animation: fadeUp 0.7s ease 0.25s both; }
+    .hero-inner .hero-subtitle  { animation: fadeUp 0.7s ease 0.4s both; }
+    .hero-inner .hero-buttons   { animation: fadeUp 0.7s ease 0.55s both; }
+    .hero-inner .hero-stats     { animation: fadeUp 0.7s ease 0.7s both; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+
+    /* ============================================================
+      7. SKILLS SECTION
+    ============================================================ */
+    #skills {
+      padding: var(--section-padding);
+      background: var(--bg-alt);
+    }
+
+    /* Grid of skill group boxes */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1px;                     /* gap shows bg-alt as a grid line effect */
+      margin-top: 52px;
+      background: #1a1a1a;          /* this becomes the grid line colour */
+    }
+
+    .skill-group {
+      background: var(--bg-alt);
+      padding: 28px;
+      border: 1px solid var(--border);
+    }
+
+    /* Numbered group label e.g. "01 / Frontend" */
+    .skill-group-label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .skill-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .skill-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #c5bfb5;
+      font-size: 0.95rem;
+    }
+
+    /* Small orange dot before each skill */
+    .skill-dot {
+      width: 5px;
+      height: 5px;
+      background: var(--accent);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+
+    /* ============================================================
+      8. PROJECTS SECTION
+    ============================================================ */
+    #projects {
+      padding: var(--section-padding);
+    }
+
+    .projects-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 12px;
+    }
+
+    .projects-header h2 {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    /* "View all on GitHub" link */
+    .github-link {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      letter-spacing: 0.06em;
+      transition: color 0.2s;
+    }
+
+    .github-link:hover {
+      color: var(--accent);
+    }
+
+    /* Grid of project cards */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1px;
+      margin-top: 52px;
+      background: var(--border);
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      padding: 36px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.25s, transform 0.25s;
+      border: 1px solid var(--border);
+    }
+
+    /* Vertical orange line slides down on hover */
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 0;
+      background: var(--accent);
+      transition: height 0.3s ease;
+    }
+
+    .project-card:hover {
+      border-color: #2a2a2a;
+      transform: translateY(-4px);
+    }
+
+    .project-card:hover::before {
+      height: 100%;
+    }
+
+    /* Top row: card number + live/repo links */
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .card-number {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-faint);
+      letter-spacing: 0.1em;
+    }
+
+    .card-links {
+      display: flex;
+      gap: 12px;
+    }
+
+    .card-links a {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      letter-spacing: 0.06em;
+      transition: color 0.2s;
+    }
+
+    .card-links a:hover {
+      color: var(--accent);
+    }
+
+    .project-card h3 {
+      font-family: var(--font-heading);
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .project-card p {
+      color: #666;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+
+    /* Tag row at bottom of each card */
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+
+    /* ============================================================
+      9. CONTACT SECTION
+    ============================================================ */
+    #contact {
+      padding: var(--section-padding);
+      background: var(--bg-alt);
+    }
+
+    /* Two columns: text left, form right */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .contact-left h2 {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 800;
+      margin-top: 12px;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    .contact-left p {
+      margin-top: 28px;
+      color: #666;
+      line-height: 1.8;
+      font-size: 0.95rem;
+      max-width: 380px;
+    }
+
+    /* Clickable email row that copies to clipboard */
+    .email-copy {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      padding: 14px 20px;
+      border: 1px solid var(--border);
+      width: fit-content;
+      margin-top: 40px;
+      transition: border-color 0.2s;
+    }
+
+    .email-copy:hover {
+      border-color: var(--accent);
+    }
+
+    .email-copy .at {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--accent);
+    }
+
+    .email-copy .address {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .email-copy .copy-hint {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-faint);
+      margin-left: 8px;
+    }
+
+    /* GitHub / LinkedIn links row */
+    .social-links {
+      display: flex;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .social-links a {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      letter-spacing: 0.06em;
+      transition: color 0.2s;
+    }
+
+    .social-links a:hover {
+      color: var(--accent);
+    }
+
+    /* Contact form */
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    /* Text inputs and textarea share the same class */
+    .input-field {
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 14px 16px;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .input-field:focus {
+      border-color: var(--accent);
+    }
+
+    .input-field::placeholder {
+      color: var(--text-faint);
+    }
+
+    textarea.input-field {
+      resize: vertical;
+      min-height: 140px;
+    }
+
+
+    /* ============================================================
+      10. FOOTER
+    ============================================================ */
+    footer {
+      border-top: 1px solid var(--border-mid);
+      padding: 28px 5vw;
+    }
+
+    .footer-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    footer span {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: #333;
+    }
+
+
+    /* ============================================================
+      11. SECTION HEADINGS (shared style)
+    ============================================================ */
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 800;
+      margin-top: 12px;
+      letter-spacing: -0.02em;
+    }
+
+
+    /* ============================================================
+      12. MEDIA QUERIES
+      Anything below 768px is treated as mobile.
+    ============================================================ */
+    @media (max-width: 768px) {
+      /* Hide desktop nav links and hire-me button */
+      .nav-links,
+      .nav-hire-btn {
+        display: none;
+      }
+
+      /* Show hamburger icon */
+      .nav-hamburger {
+        display: block;
+      }
+
+      /* Stack contact section vertically */
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      /* Reduce hero stat spacing */
+      .hero-stats {
+        gap: 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================================================
+    NAVIGATION
+  ============================================================ -->
+  <nav>
+    <div class="nav-inner">
+
+      <!-- Logo / name in top-left — update "YourName" -->
+      <div class="nav-logo">YourName<span class="cursor-blink">_</span></div>
+
+      <!-- Desktop navigation links -->
+      <ul class="nav-links">
+        <li><a href="#about"    class="active">About</a></li>
+        <li><a href="#skills"           >Skills</a></li>
+        <li><a href="#projects"         >Projects</a></li>
+        <li><a href="#contact"          >Contact</a></li>
+      </ul>
+
+      <!-- Hire me button (desktop) -->
+      <a href="#contact" class="btn-primary nav-hire-btn">Hire Me</a>
+
+      <!-- Hamburger button (mobile only) -->
+      <button class="nav-hamburger" id="hamburger" aria-label="Open menu">☰</button>
+    </div>
+
+    <!-- Mobile dropdown — toggled by JS -->
+    <div class="nav-mobile-menu" id="mobileMenu">
+      <a href="#about"   >About</a>
+      <a href="#skills"  >Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact" >Contact</a>
+    </div>
+  </nav>
+
+
+  <!-- ============================================================
+    HERO / ABOUT SECTION
+  ============================================================ -->
+  <section id="about">
+
+    <!-- Background glow orb (purely decorative) -->
+    <div class="hero-orb"></div>
+
+    <div class="hero-inner container">
+
+      <!-- Small label above title -->
+      <span class="section-label">Full Stack Developer</span>
+
+      <!-- Main heading — update with your own name -->
+      <h1 class="hero-title">
+        Your<br>
+        <span>Name</span><br>
+        Here.
+      </h1>
+
+      <!-- Short intro — write 2-3 sentences about yourself -->
+      <p class="hero-subtitle">
+        I build things for the web — from clean UIs to robust backends.
+        Currently finishing a full stack development course and looking for
+        opportunities to ship real products with great teams.
+      </p>
+
+      <!-- CTA buttons -->
+      <div class="hero-buttons">
+        <a href="#projects" class="btn-primary">View My Work</a>
+        <a href="#contact"  class="btn-outline">Get In Touch</a>
+      </div>
+
+      <!-- Stats — update numbers as you go -->
+      <div class="hero-stats">
+        <div>
+          <div class="hero-stat-number">3+</div>
+          <div class="hero-stat-label">Projects Built</div>
+        </div>
+        <div>
+          <div class="hero-stat-number">6+</div>
+          <div class="hero-stat-label">Months Coding</div>
+        </div>
+        <div>
+          <div class="hero-stat-number">2025</div>
+          <div class="hero-stat-label">Available From</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+    SKILLS SECTION
+  ============================================================ -->
+  <section id="skills">
+    <div class="container">
+
+      <!-- Section header -->
+      <div class="fade-in">
+        <span class="section-label">What I Work With</span>
+        <h2 class="section-title">Skills &amp;<br>Technologies</h2>
+        <div class="divider"></div>
+      </div>
+
+      <!-- Skill groups grid — add/remove groups as needed -->
+      <div class="skills-grid">
+
+        <!-- Group 1: Frontend -->
+        <div class="skill-group fade-in">
+          <div class="skill-group-label">01 / Frontend</div>
+          <ul class="skill-list">
+            <li><span class="skill-dot"></span>React</li>
+            <li><span class="skill-dot"></span>JavaScript (ES6+)</li>
+            <li><span class="skill-dot"></span>HTML5 &amp; CSS3</li>
+            <li><span class="skill-dot"></span>Tailwind CSS</li>
+          </ul>
+        </div>
+
+        <!-- Group 2: Backend -->
+        <div class="skill-group fade-in">
+          <div class="skill-group-label">02 / Backend</div>
+          <ul class="skill-list">
+            <li><span class="skill-dot"></span>Node.js</li>
+            <li><span class="skill-dot"></span>Express</li>
+            <li><span class="skill-dot"></span>REST APIs</li>
+            <li><span class="skill-dot"></span>SQL / PostgreSQL</li>
+          </ul>
+        </div>
+
+        <!-- Group 3: Tools -->
+        <div class="skill-group fade-in">
+          <div class="skill-group-label">03 / Tools</div>
+          <ul class="skill-list">
+            <li><span class="skill-dot"></span>Git &amp; GitHub</li>
+            <li><span class="skill-dot"></span>Docker</li>
+            <li><span class="skill-dot"></span>Figma</li>
+            <li><span class="skill-dot"></span>VS Code</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+    PROJECTS SECTION
+  ============================================================ -->
+  <section id="projects">
+    <div class="container">
+
+      <!-- Section header row -->
+      <div class="fade-in">
+        <span class="section-label">Selected Work</span>
+        <div class="projects-header">
+          <h2>Projects</h2>
+          <!-- Update href to your actual GitHub profile -->
+          <a href="https://github.com/yourusername" target="_blank" class="github-link">
+            View All on GitHub →
+          </a>
+        </div>
+        <div class="divider"></div>
+      </div>
+
+      <!-- Projects grid — copy a .project-card block to add more -->
+      <div class="projects-grid">
+
+        <!-- PROJECT CARD 1 -->
+        <div class="project-card fade-in">
+          <div class="card-top">
+            <span class="card-number">01</span>
+            <div class="card-links">
+              <a href="#" target="_blank">Live ↗</a>  <!-- replace # with live URL -->
+              <a href="#" target="_blank">Repo ↗</a>  <!-- replace # with GitHub URL -->
+            </div>
+          </div>
+          <h3>Project One</h3>
+          <p>
+            A full-stack web app built with React and Node.js.
+            Add a sentence or two about what problem it solves and what you learned.
+          </p>
+          <div class="card-tags">
+            <span class="tag">React</span>
+            <span class="tag">Node.js</span>
+            <span class="tag">PostgreSQL</span>
+          </div>
+        </div>
+
+        <!-- PROJECT CARD 2 -->
+        <div class="project-card fade-in">
+          <div class="card-top">
+            <span class="card-number">02</span>
+            <div class="card-links">
+              <a href="#" target="_blank">Live ↗</a>
+              <a href="#" target="_blank">Repo ↗</a>
+            </div>
+          </div>
+          <h3>Project Two</h3>
+          <p>
+            Describe your second project here.
+            What was the challenge? What stack did you use? What are you proud of?
+          </p>
+          <div class="card-tags">
+            <span class="tag">Express</span>
+            <span class="tag">REST API</span>
+            <span class="tag">CSS3</span>
+          </div>
+        </div>
+
+        <!-- PROJECT CARD 3 -->
+        <div class="project-card fade-in">
+          <div class="card-top">
+            <span class="card-number">03</span>
+            <div class="card-links">
+              <a href="#" target="_blank">Live ↗</a>
+              <a href="#" target="_blank">Repo ↗</a>
+            </div>
+          </div>
+          <h3>Project Three</h3>
+          <p>
+            Your third project. Even a small tool or clone counts —
+            explain your reasoning and what you built.
+          </p>
+          <div class="card-tags">
+            <span class="tag">JavaScript</span>
+            <span class="tag">HTML5</span>
+            <span class="tag">Docker</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+    CONTACT SECTION
+  ============================================================ -->
+  <section id="contact">
+    <div class="container">
+      <div class="contact-grid">
+
+        <!-- Left column: text + email + social links -->
+        <div class="contact-left fade-in">
+          <span class="section-label">Let's Talk</span>
+          <h2>Open to<br>Opportunities</h2>
+          <div class="divider"></div>
+          <p>
+            I'm actively looking for junior full stack roles and internships.
+            If you're working on something interesting, I'd love to hear about it.
+          </p>
+
+          <!-- Click to copy email address — JS handles this -->
+          <div class="email-copy" id="emailCopy">
+            <span class="at">@</span>
+            <span class="address">your.email@example.com</span>
+            <span class="copy-hint" id="copyHint">copy</span>
+          </div>
+
+          <!-- Social links — update hrefs -->
+          <div class="social-links">
+            <a href="https://github.com/yourusername"          target="_blank">GitHub ↗</a>
+            <a href="https://linkedin.com/in/yourprofile"      target="_blank">LinkedIn ↗</a>
+          </div>
+        </div>
+
+        <!-- Right column: contact form -->
+        <div class="contact-right fade-in">
+          <form class="contact-form" id="contactForm">
+
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input class="input-field" type="text" id="name" name="name" placeholder="Your name" required />
             </div>
 
-            <!-- mobile dropdown feature -->
-             <div class="nav-mobile-menu" id="mobileMenu">
-                <a href="#about">About</a>
-                <a href="#skills">Skills</a>
-                <a href="#projecs">Projects</a>
-                <a href="#contact">Contact</a>
-             </div>
-         </nav>
-
-         <!-- HERO / ABOUT section -->
-          <section id="about">
-            <div class="hero-orb"></div>
-            <div class="hero-inner-container">
-
-                <span class="section-label">Full Stack Developer</span>
-
-                <h1 class="hero-title">
-                    Colin<br>
-                    <span>Keogh</span><br>
-                </h1>
-
-                <p class="hero-subtitle">
-                    Currently learning how to build things for the web - from clean UIs to robust and complex backends. Currently finishing a full stack course from UCD and looking for opportunities as a junior developer. 
-                </p>
-
-                <div class="hero-buttons">
-                    <a href="#projects" class="btn-primary">View my work</a>
-                    <a href="#contact" class="btn-outline">Get in touch</a>
-                </div>
-
-                <!-- stats to be updated as more projects are added -->
-                 <div class="hero-stats">
-                    <div>
-                        <div class="hero-stat-number">3+</div>
-                        <div class="hero-stat-label">Projects Built</div>
-                    </div>
-                    <div>
-                        <div class="hero-stat-number">8+</div>
-                        <div class="hero-stat-label">Months Coding</div>
-                    </div>
-                    <div>
-                        <div class="hero-stat-number">2026</div>
-                        <div class="hero-stat-label">Available From</div>
-                    </div>
-                 </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input class="input-field" type="email" id="email" name="email" placeholder="your@email.com" required />
             </div>
-          </section>
 
-          <!-- skills to be updated as more are learned and applied -->
-           <section id="skills">
-            <div class="container">
-
-                <div class="fade-in">
-                    <span class="section-label">What I work with</span>
-                    <h2 class="section-title">Skills &<br>Technologies</h2>
-                    <div class="divider"></div>
-                </div>
-
-                <!-- skill groups grid - again to be added and more are learned and applied -->
-                 <div class="skills-grid">
-
-                    <!-- Frontend -->
-                     <div class="skill-group fade-in">
-                        <div class="skill-group-label">01 / Frontend</div>
-                        <ul class="skill-list">
-                            <li><span class="skill-dot"></span>React</li>
-                            <li><span class="skill-dot"></span>JavaScript (ES6+)</li>
-                            <li><span class="skill-dot"></span>HTML5 & CSS3</li>
-                        </ul>
-                     </div>
-
-                     <!-- Backend -->
-                      <div class="skill-group fade-in">
-                        <div class="skill-group-label">02 / Backend</div>
-                        <ul class="skill-list">
-                            <li><span class="skill-dot"></span>Node.js</li>
-                            <li><span class="skill-dot"></span>Express</li>
-                            <li><span class="skill-dot"></span>REST APIs</li>
-                            <li><span class="skill-dot"></span>SQL / PostgreSQL</li>
-                        </ul>
-                      </div>
-
-                      <!-- Tools -->
-                       <div class="skill-group fade-in">
-                        <div class="skill-group-label">03 / Tools</div>
-                        <ul class="skill-list">
-                            <li><span class="skill-dot"></span>Git & GitHub</li>
-                            <li><span class="skill-dot"></span>Docker</li>
-                            <li><span class="skill-dot"></span>Figma</li>
-                            <li><span class="skill-dot"></span>VS Code</li>
-                        </ul>
-                       </div>
-                 </div>
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea class="input-field" id="message" name="message" placeholder="Tell me about the opportunity..." required></textarea>
             </div>
-           </section>
 
-           <!-- projects -->
-    </body>
+            <button type="submit" class="btn-primary">Send Message</button>
+
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+    FOOTER
+  ============================================================ -->
+  <footer>
+    <div class="footer-inner">
+      <span>© 2025 YourName — Built from scratch</span>
+      <span>Dublin, IE</span>
+    </div>
+  </footer>
+
+
+  <!-- ============================================================
+    JAVASCRIPT
+    Three things happening here:
+    1. Mobile hamburger menu toggle
+    2. Scroll-based fade-in animations (IntersectionObserver)
+    3. Active nav link highlighting as you scroll
+    4. Copy email to clipboard
+  ============================================================ -->
+  <script>
+
+    /* ----------------------------------------------------------
+      1. MOBILE HAMBURGER MENU
+    ---------------------------------------------------------- */
+    const hamburger  = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    hamburger.addEventListener('click', () => {
+      // Toggle the "open" class — CSS shows/hides the menu based on this
+      mobileMenu.classList.toggle('open');
+
+      // Swap the icon between ☰ (open) and ✕ (close)
+      hamburger.textContent = mobileMenu.classList.contains('open') ? '✕' : '☰';
+    });
+
+    // Close the mobile menu when any link inside it is clicked
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        hamburger.textContent = '☰';
+      });
+    });
+
+
+    /* ----------------------------------------------------------
+      2. SCROLL FADE-IN ANIMATIONS (IntersectionObserver)
+      IntersectionObserver watches elements and fires a callback
+      when they enter or leave the viewport.
+    ---------------------------------------------------------- */
+    const fadeEls = document.querySelectorAll('.fade-in');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          // Small staggered delay so grouped items animate in sequence
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, index * 80);
+
+          // Once visible, stop observing — no need to watch it anymore
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.15  // trigger when 15% of the element is visible
+    });
+
+    fadeEls.forEach(el => observer.observe(el));
+
+
+    /* ----------------------------------------------------------
+      3. ACTIVE NAV LINK HIGHLIGHTING
+      As you scroll, the nav link for the current section
+      gets the "active" class.
+    ---------------------------------------------------------- */
+    const sections  = document.querySelectorAll('section[id]');
+    const navLinks  = document.querySelectorAll('.nav-links a');
+
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Remove active from all links
+          navLinks.forEach(link => link.classList.remove('active'));
+
+          // Add active to the link whose href matches the visible section
+          const activeLink = document.querySelector(`.nav-links a[href="#${entry.target.id}"]`);
+          if (activeLink) activeLink.classList.add('active');
+        }
+      });
+    }, {
+      rootMargin: '-40% 0px -55% 0px'  // triggers when section is in the middle of the viewport
+    });
+
+    sections.forEach(section => navObserver.observe(section));
+
+
+    /* ----------------------------------------------------------
+      4. COPY EMAIL TO CLIPBOARD
+    ---------------------------------------------------------- */
+    const emailCopy = document.getElementById('emailCopy');
+    const copyHint  = document.getElementById('copyHint');
+    const EMAIL     = 'your.email@example.com';  // <-- update this
+
+    emailCopy.addEventListener('click', () => {
+      navigator.clipboard.writeText(EMAIL).then(() => {
+        copyHint.textContent = '✓ copied';
+
+        // Reset the hint text after 2 seconds
+        setTimeout(() => {
+          copyHint.textContent = 'copy';
+        }, 2000);
+      });
+    });
+
+
+    /* ----------------------------------------------------------
+      5. CONTACT FORM SUBMISSION
+      The form doesn't send anywhere yet — this just prevents the
+      default browser behaviour and shows a basic confirmation.
+      When you're ready, hook this up to EmailJS or Formspree.
+    ---------------------------------------------------------- */
+    const contactForm = document.getElementById('contactForm');
+
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();  // stops page from refreshing
+
+      const btn = contactForm.querySelector('button[type="submit"]');
+      btn.textContent = '✓ Message Sent!';
+      btn.style.background = '#2a9d5c';   // green to confirm success
+
+      // Reset the button after 3 seconds
+      setTimeout(() => {
+        btn.textContent = 'Send Message';
+        btn.style.background = '';
+        contactForm.reset();
+      }, 3000);
+    });
+
+  </script>
+
+</body>
 </html>
